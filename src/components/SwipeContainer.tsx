@@ -1,6 +1,6 @@
 // src/components/SwipeContainer.tsx
 import React, { useState, useRef, useCallback, useEffect } from "react";
-import { Cat } from "../types";
+import type { Cat } from "../types";
 
 interface SwipeContainerProps {
   cats: Cat[];

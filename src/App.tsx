@@ -75,7 +75,7 @@ const PawsPreferences = () => {
     }));
   };
 
-  const handleEnd = (finalX?: number, finalY?: number) => {
+  const handleEnd = (finalX?: number, _finalY?: number) => {
     console.log("handleEnd called, isDragging:", dragState.isDragging);
     if (!dragState.isDragging) return;
 
@@ -126,10 +126,6 @@ const PawsPreferences = () => {
 
   const handleMouseMove = (e: React.MouseEvent | MouseEvent) => {
     handleMove(e.clientX, e.clientY);
-  };
-
-  const handleMouseUp = () => {
-    handleEnd();
   };
 
   const handleTouchStart = (e: React.TouchEvent) => {
