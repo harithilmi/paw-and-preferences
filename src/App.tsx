@@ -75,7 +75,7 @@ const PawsPreferences = () => {
     }));
   };
 
-  const handleEnd = (finalX?: number, _finalY?: number) => {
+  const handleEnd = (finalX?: number) => {
     console.log("handleEnd called, isDragging:", dragState.isDragging);
     if (!dragState.isDragging) return;
 
@@ -129,6 +129,7 @@ const PawsPreferences = () => {
   };
 
   const handleTouchStart = (e: React.TouchEvent) => {
+    e.preventDefault();
     const touch = e.touches[0];
     handleStart(touch.clientX, touch.clientY);
   };
@@ -152,7 +153,7 @@ const PawsPreferences = () => {
 
     const handleGlobalMouseUp = (e: MouseEvent) => {
       if (dragState.isDragging) {
-        handleEnd(e.clientX, e.clientY);
+        handleEnd(e.clientX);
       }
     };
 
@@ -244,6 +245,18 @@ const PawsPreferences = () => {
     const offset = index - currentIndex;
     return Math.max(0, 1 - offset * 0.15);
   };
+
+  useEffect(() => {
+    if (showResults) {
+      document.body.classList.remove('no-scroll');
+    } else {
+      document.body.classList.add('no-scroll');
+    }
+    
+    return () => {
+      document.body.classList.remove('no-scroll');
+    };
+  }, [showResults]);
 
   const getLikeOpacity = () => {
     if (!dragState.isDragging) return 0;
