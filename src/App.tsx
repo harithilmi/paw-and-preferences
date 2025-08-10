@@ -1,11 +1,18 @@
 import { useState, useRef, useEffect } from "react";
 import { Heart, X, RotateCcw, PawPrint } from "lucide-react";
 
+interface Cat {
+  id: number;
+  imageUrl: string;
+}
+
+type SwipeDirection = "left" | "right" | null;
+
 const PawsPreferences = () => {
-  const [cats, setCats] = useState([]);
+  const [cats, setCats] = useState<Cat[]>([]);
   const [currentIndex, setCurrentIndex] = useState(0);
-  const [likedCats, setLikedCats] = useState([]);
-  const [swipeDirection, setSwipeDirection] = useState(null); // Track last swipe direction
+  const [likedCats, setLikedCats] = useState<Cat[]>([]);
+  const [swipeDirection, setSwipeDirection] = useState<SwipeDirection>(null); // Track last swipe direction
   const [dragState, setDragState] = useState({
     isDragging: false,
     startX: 0,
@@ -41,7 +48,7 @@ const PawsPreferences = () => {
     generateCats();
   }, []);
 
-  const handleStart = (clientX, clientY) => {
+  const handleStart = (clientX: number, clientY: number) => {
     console.log("Drag started at:", { clientX, clientY });
     setDragState({
       isDragging: true,
@@ -52,7 +59,7 @@ const PawsPreferences = () => {
     });
   };
 
-  const handleMove = (clientX, clientY) => {
+  const handleMove = (clientX: number, clientY: number) => {
     if (!dragState.isDragging) return;
 
     console.log("Moving:", {
@@ -68,12 +75,12 @@ const PawsPreferences = () => {
     }));
   };
 
-  const handleEnd = (finalX, finalY) => {
+  const handleEnd = (finalX?: number, finalY?: number) => {
     console.log("handleEnd called, isDragging:", dragState.isDragging);
     if (!dragState.isDragging) return;
 
-    // Use the final coordinates passed directly, not from state
-    const deltaX = finalX - dragState.startX;
+    // Use the final coordinates passed directly, or fall back to current state
+    const deltaX = (finalX ?? dragState.currentX) - dragState.startX;
     const threshold = 60;
 
     console.log("Swipe ended:", {
@@ -112,12 +119,12 @@ const PawsPreferences = () => {
     });
   };
 
-  const handleMouseDown = (e) => {
+  const handleMouseDown = (e: React.MouseEvent) => {
     e.preventDefault();
     handleStart(e.clientX, e.clientY);
   };
 
-  const handleMouseMove = (e) => {
+  const handleMouseMove = (e: React.MouseEvent | MouseEvent) => {
     handleMove(e.clientX, e.clientY);
   };
 
@@ -125,12 +132,12 @@ const PawsPreferences = () => {
     handleEnd();
   };
 
-  const handleTouchStart = (e) => {
+  const handleTouchStart = (e: React.TouchEvent) => {
     const touch = e.touches[0];
     handleStart(touch.clientX, touch.clientY);
   };
 
-  const handleTouchMove = (e) => {
+  const handleTouchMove = (e: React.TouchEvent) => {
     e.preventDefault();
     const touch = e.touches[0];
     handleMove(touch.clientX, touch.clientY);
@@ -141,13 +148,13 @@ const PawsPreferences = () => {
   };
 
   useEffect(() => {
-    const handleGlobalMouseMove = (e) => {
+    const handleGlobalMouseMove = (e: MouseEvent) => {
       if (dragState.isDragging) {
         handleMouseMove(e);
       }
     };
 
-    const handleGlobalMouseUp = (e) => {
+    const handleGlobalMouseUp = (e: MouseEvent) => {
       if (dragState.isDragging) {
         handleEnd(e.clientX, e.clientY);
       }
@@ -209,7 +216,7 @@ const PawsPreferences = () => {
     setShowResults(false);
   };
 
-  const getCardTransform = (index) => {
+  const getCardTransform = (index: number): string => {
     if (index < currentIndex) {
       // Cards that have been swiped away - animate in the direction they were swiped
       const direction = swipeDirection === "right" ? "100vw" : "-100vw";
@@ -235,7 +242,7 @@ const PawsPreferences = () => {
     }) rotate(0deg)`;
   };
 
-  const getOpacity = (index) => {
+  const getOpacity = (index: number): number => {
     if (index < currentIndex) return 0;
     if (index === currentIndex) return 1;
     const offset = index - currentIndex;
