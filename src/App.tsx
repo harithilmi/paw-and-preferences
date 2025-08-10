@@ -269,14 +269,7 @@ const PawsPreferences = () => {
 
   if (showResults) {
     return (
-      <div
-        className="min-h-screen bg-gradient-to-br from-purple-100 via-pink-100 to-orange-100 p-4 overflow-hidden"
-        style={{ touchAction: "none" }} // Prevent page drag and scroll
-        onTouchMove={e => e.preventDefault()} // Prevent scrolling on touch
-        onWheel={e => e.preventDefault()} // Prevent scrolling with mouse wheel
-        onScroll={e => e.preventDefault()} // Prevent scroll events
-        draggable={false}
-      >
+      <div className="min-h-screen bg-gradient-to-br from-purple-100 via-pink-100 to-orange-100 p-4">
         <div className="max-w-lg mx-auto">
           {/* Header */}
           <div className="text-center mb-8 pt-8">
@@ -303,16 +296,13 @@ const PawsPreferences = () => {
                 Your Favorite Cats 😻
               </h2>
               <div className="grid grid-cols-2 gap-4 mb-8">
-                {likedCats.map((cat: any, index: number) => (
+                {likedCats.map((cat, index) => (
                   <div key={cat.id} className="relative">
                     <img
                       src={cat.imageUrl}
                       alt={`Liked cat ${index + 1}`}
                       className="w-full h-48 object-cover rounded-xl shadow-lg"
                       loading="lazy"
-                      draggable={false}
-                      style={{ touchAction: "none", userSelect: "none" }}
-                      onDragStart={e => e.preventDefault()}
                     />
                     <div className="absolute top-2 right-2 bg-red-500 text-white p-1 rounded-full">
                       <Heart size={16} fill="white" />
